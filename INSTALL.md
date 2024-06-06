@@ -1,8 +1,8 @@
 # Installation  
 Step 1: Create a new conda environment:
 ```
-conda create -n prune_llm python=3.9
-conda activate prune_llm
+conda create -n effai python=3.9
+conda activate effai
 ```
 Step 2: Install relevant packages
 ```
@@ -18,4 +18,5 @@ or
 Install via 
 ```
  conda env create --file environment.yaml
+ conda activate effai
 ```
