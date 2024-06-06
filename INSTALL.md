@@ -11,3 +11,11 @@ pip install transformers==4.28.0 datasets==2.11.0 wandb sentencepiece
 pip install accelerate==0.18.0
 ```
 There are known [issues](https://github.com/huggingface/transformers/issues/22222) with the transformers library on loading the LLaMA tokenizer correctly. Please follow the mentioned suggestions to resolve this issue.
+Step 3: Install lm_eval packages following this [link](https://github.com/EleutherAI/lm-evaluation-harness)
+
+or
+
+Install via 
+```
+ conda env create --file environment.yaml
+```
