@@ -27,7 +27,7 @@ We provide a quick overview of the arguments:
 ## Pruned Weights
 We provide some pruned weights in this google drive [link](https://drive.google.com/drive/folders/17vAyTgZCKV9UPCFYuFI_NQA91k9_MLXH?usp=share_link).
 
-## Evaluation
+## Evaluation with [kobest_helleaswag](https://www.google.com/search?client=safari&rls=en&q=kobest&ie=UTF-8&oe=UTF-8) Dataset and Check Sparsity
 ```sh
 python evaluate_llm.py --model_path MODEL_PATH
 ```
