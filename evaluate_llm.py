@@ -1,33 +1,40 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 import numpy as np
-
 from lm_eval import simple_evaluate
 from lm_eval.models.huggingface import HFLM
 from lm_eval.utils import make_table
 from lm_eval.tasks import TaskManager
+from lib.prune import check_sparsity
+import argparse
 import sys
 
-torch.manual_seed(0)
-device = 'cuda'
-# tokenizer = AutoTokenizer.from_pretrained("42dot/42dot_LLM-PLM-1.3B")
-# model = AutoModelForCausalLM.from_pretrained("42dot/42dot_LLM-PLM-1.3B").to(device)
-# tokenizer = AutoTokenizer.from_pretrained("/home/jocho/CourseWork/wanda/out/42_dot_weight_sparsegpt_wiki")
-# model = AutoModelForCausalLM.from_pretrained("/home/jocho/CourseWork/wanda/out/42_dot_weight_sparsegpt_wiki").to(device)
-# tokenizer = AutoTokenizer.from_pretrained("/home/jocho/CourseWork/wanda/out/42_dot_weight_magnitude")
-# model = AutoModelForCausalLM.from_pretrained("/home/jocho/CourseWork/wanda/out/42_dot_weight_magnitude").to(device)
-# tokenizer = AutoTokenizer.from_pretrained("/home/jocho/CourseWork/wanda/out/42_dot_weight_wanda_kobest_50")
-# model = AutoModelForCausalLM.from_pretrained("/home/jocho/CourseWork/wanda/out/42_dot_weight_wanda_kobest_50").to(device)
-tokenizer = AutoTokenizer.from_pretrained("/home/jocho/CourseWork/wanda/out/42_dot_weight_sparsegpt_kobest_50")
-model = AutoModelForCausalLM.from_pretrained("/home/jocho/CourseWork/wanda/out/42_dot_weight_sparsegpt_kobest_50").to(device)
-print(f"Model size: {model.get_memory_footprint():,} bytes")
+if __name__ == '__main__':
 
-lm = HFLM(pretrained=model, tokenizer=tokenizer, max_length=tokenizer.model_max_length,
-              batch_size=8, trust_remote_code=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_path', type=str, default=None, help='Path to load the pruned/original model.')
+    args = parser.parse_args()
 
-results = simple_evaluate(
-            model=lm,
-            tasks=["kobest_hellaswag"],
-            task_manager=TaskManager(),)
+    device = 'cuda:0'
+    
+    tokenizer = AutoTokenizer.from_pretrained(args.model_path)
+    model = AutoModelForCausalLM.from_pretrained(args.model_path).to(device)
 
-print(make_table(results))
+    print(f"Model size: {model.get_memory_footprint():,} bytes")
+
+    ################################################################
+    print("*"*30)
+    sparsity_ratio = check_sparsity(model)
+    print(f"Sparsity Check {sparsity_ratio:.4f}")
+    print("*"*30)
+    ################################################################
+
+    lm = HFLM(pretrained=model, tokenizer=tokenizer, max_length=tokenizer.model_max_length,
+                batch_size=8, trust_remote_code=True)
+
+    results = simple_evaluate(
+                model=lm,
+                tasks=["kobest_hellaswag"],
+                task_manager=TaskManager(),)
+
+    print(make_table(results))
