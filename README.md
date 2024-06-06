@@ -33,4 +33,4 @@ python evaluate_llm.py --model_path MODEL_PATH
 ```
 
 ## Acknowledgement
-This repository is build upon the [Wanda](https://github.com/locuslab/wanda) repository.
+This repository is largely build upon the [Wanda](https://github.com/locuslab/wanda) repository.
