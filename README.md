@@ -4,7 +4,7 @@
 Installation instructions can be found in [INSTALL.md](INSTALL.md).
 
 ## Usage
-To reproduce the magnitude pruning run below command: 
+To reproduce the various pruning methods run below command: 
 
 ```sh
 python main.py --model 42dot/42dot_LLM-PLM-1.3B --prune_method random --sparsity_ratio 0.5 --sparsity_type unstructured --save_model out/42_dot_weight_random
@@ -18,11 +18,14 @@ python main.py --model 42dot/42dot_LLM-PLM-1.3B --prune_method wanda --sparsity_
 We provide a quick overview of the arguments:  
 - `--model`: The identifier for the LLaMA model on the Hugging Face model hub.
 - `--cache_dir`: Directory for loading or storing LLM weights. The default is `llm_weights`.
-- `--prune_method`: We have implemented three pruning methods, namely [`magnitude`, `wanda`, `sparsegpt`].
+- `--prune_method`: We have implemented three pruning methods, namely [`random`, `magnitude`, `wanda`, `sparsegpt`].
 - `--sparsity_ratio`: Denotes the percentage of weights to be pruned.
 - `--sparsity_type`: Specifies the type of sparsity [`unstructured`, `2:4`, `4:8`].
-- `--use_variant`: Whether to use the Wanda variant, default is `False`. 
-- `--save`: Specifies the directory where the result will be stored.
+- `--save_model`: Specifies the directory where the pruned model will be stored.
+- `--cali_data`: Specifies the calibrating data for pruning with Wanda or SparseGPT, namely [`wikitext2`, `kobest_hellaswag`].
+
+## Pruned Weights
+We provide some pruned weights in this google drive [link](https://drive.google.com/drive/folders/17vAyTgZCKV9UPCFYuFI_NQA91k9_MLXH?usp=share_link).
 
 ## Evaluation
 ```sh
